@@ -8,6 +8,9 @@ class EmployeeEditor extends Component {
       originalEmployee: null,
       notModified: true
     };
+
+    this.save = this.save.bind(this);
+    this.cancel = this.cancel.bind(this);
   }
 
   componentWillReceiveProps(props) {
@@ -35,6 +38,25 @@ class EmployeeEditor extends Component {
   cancel() {
     var employeeCopy = Object.assign({}, this.state.originalEmployee);
     this.setState({ employee: employeeCopy, notModified: true });
+  }
+
+  componentWillReceiveProps(props){
+    this.setState({
+      // Object.assign -- creates a copy of the object from props.selected
+      employee: Object.assign({}, props.selected), 
+      originalEmployee: props.selected, 
+      notModified: true
+    })
+  }
+
+  handleChange(prop, val){
+    if(this.state.notModified){
+      this.setState({ notModified: false })
+    }
+
+    let employeeCopy = Object.assign({}, this.state.employee);
+    employeeCopy[prop] = val;
+    this.setState({ employee: employeeCopy })
   }
   
   render() {
